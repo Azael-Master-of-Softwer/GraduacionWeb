@@ -65,7 +65,6 @@ El backend cuenta con autenticación, roles de administrador y graduado, registr
 
 ## Integrantes
 
-- Integrante 1
-- Integrante 2
-- Integrante 3
-- Integrante 4
+- Azael Cardenas
+- Angel Galvan
+- Hugo Flores
