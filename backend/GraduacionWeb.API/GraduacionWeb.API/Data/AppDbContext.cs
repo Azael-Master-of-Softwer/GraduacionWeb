@@ -19,6 +19,8 @@ namespace GraduacionWeb.API.Data
 
         public DbSet<EventoCalendario> EventosCalendario { get; set; }
 
+        public DbSet<Aviso> Avisos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
