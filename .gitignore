@@ -1,0 +1,33 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# .NET
+bin/
+obj/
+
+# Node
+node_modules/
+dist/
+
+# Logs
+*.log
+
+# User Secrets
+secrets.json
+
+# Environment variables
+.env
+.env.*
+
+# PostgreSQL / archivos locales
+*.db
+*.sqlite
+
+# Archivos temporales
+Thumbs.db
+.DS_Store
+
+# Configuración local del backend
+backend/GraduacionWeb.API/GraduacionWeb.API/appsettings.json
