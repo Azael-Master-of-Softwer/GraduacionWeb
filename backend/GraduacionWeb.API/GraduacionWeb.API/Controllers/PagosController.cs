@@ -1,8 +1,9 @@
 ﻿using GraduacionWeb.API.Data;
+using GraduacionWeb.API.DTOs;
 using GraduacionWeb.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 
 namespace GraduacionWeb.API.Controllers
 {
@@ -32,8 +33,25 @@ namespace GraduacionWeb.API.Controllers
         // Registrar un pago
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> CrearPago(Pago pago)
+        public async Task<IActionResult> CrearPago(PagoCrearDto dto)
         {
+            var graduado = await _context.Graduados
+                .FirstOrDefaultAsync(g => g.Id == dto.GraduadoId);
+
+            if (graduado == null)
+            {
+                return NotFound("El graduado no existe.");
+            }
+
+            var pago = new Pago
+            {
+                GraduadoId = dto.GraduadoId,
+                Monto = dto.Monto,
+                Concepto = dto.Concepto,
+                Fecha = DateTime.Now,
+                Estado = "CONFIRMADO"
+            };
+
             _context.Pagos.Add(pago);
 
             await _context.SaveChangesAsync();
