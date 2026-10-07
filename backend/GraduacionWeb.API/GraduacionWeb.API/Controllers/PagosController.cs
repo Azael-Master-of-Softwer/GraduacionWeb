@@ -43,6 +43,20 @@ namespace GraduacionWeb.API.Controllers
                 return NotFound("El graduado no existe.");
             }
 
+            var totalPagado = await _context.Pagos
+                .Where(p => p.GraduadoId == dto.GraduadoId
+                         && p.Estado == "CONFIRMADO")
+                .SumAsync(p => p.Monto);
+
+            var pendiente = graduado.TotalGraduacion - totalPagado;
+
+            if (dto.Monto > pendiente)
+            {
+                return BadRequest(
+                    $"El pago supera el monto pendiente. Pendiente actual: {pendiente:C}"
+                );
+            }
+
             var pago = new Pago
             {
                 GraduadoId = dto.GraduadoId,
