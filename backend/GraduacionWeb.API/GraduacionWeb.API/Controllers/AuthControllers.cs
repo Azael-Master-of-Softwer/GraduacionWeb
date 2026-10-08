@@ -1,12 +1,13 @@
-﻿using GraduacionWeb.API.DTOs;
-using GraduacionWeb.API.Data;
+﻿using GraduacionWeb.API.Data;
+using GraduacionWeb.API.DTOs;
 using GraduacionWeb.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 using System.Text;
 
 namespace GraduacionWeb.API.Controllers
@@ -33,6 +34,7 @@ namespace GraduacionWeb.API.Controllers
         }
 
         // REGISTRO
+        [AllowAnonymous]
         [HttpPost("registro")]
         public async Task<IActionResult> Registro(RegistroDto registro)
         {
@@ -99,6 +101,7 @@ namespace GraduacionWeb.API.Controllers
         }
 
         // LOGIN
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto login)
         {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi;
 using System.Text;
 
@@ -70,6 +71,13 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -131,7 +139,7 @@ using (var scope = app.Services.CreateScope())
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi().AllowAnonymous();
     app.UseSwagger();
     app.UseSwaggerUI();
 }

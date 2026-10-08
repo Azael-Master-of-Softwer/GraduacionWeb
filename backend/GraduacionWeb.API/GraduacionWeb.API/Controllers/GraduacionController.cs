@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GraduacionWeb.API.Controllers
 {
@@ -7,6 +8,7 @@ namespace GraduacionWeb.API.Controllers
     [ApiController]
     public class GraduacionController : ControllerBase
     {
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult ObtenerMensaje()
         {
