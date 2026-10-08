@@ -19,7 +19,6 @@ namespace GraduacionWeb.API.Controllers
         }
 
         // Obtener todos los pagos
-        // Obtener todos los pagos
         [HttpGet]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> ObtenerPagos()
@@ -81,7 +80,16 @@ namespace GraduacionWeb.API.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(pago);
+            return Ok(new PagoListadoDto
+            {
+                Id = pago.Id,
+                GraduadoId = pago.GraduadoId,
+                Identificador = graduado.Identificador,
+                Fecha = pago.Fecha,
+                Monto = pago.Monto,
+                Concepto = pago.Concepto,
+                Estado = pago.Estado
+            });
         }
     }
 }
