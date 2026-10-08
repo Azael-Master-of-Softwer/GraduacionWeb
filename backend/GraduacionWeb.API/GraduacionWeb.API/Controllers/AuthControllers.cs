@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Text;
 
 namespace GraduacionWeb.API.Controllers
@@ -35,6 +36,7 @@ namespace GraduacionWeb.API.Controllers
 
         // REGISTRO
         [AllowAnonymous]
+        [EnableRateLimiting("auth")]
         [HttpPost("registro")]
         public async Task<IActionResult> Registro(RegistroDto registro)
         {
@@ -102,6 +104,7 @@ namespace GraduacionWeb.API.Controllers
 
         // LOGIN
         [AllowAnonymous]
+        [EnableRateLimiting("auth")]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto login)
         {
