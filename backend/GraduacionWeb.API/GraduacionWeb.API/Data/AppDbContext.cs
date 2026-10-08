@@ -36,6 +36,24 @@ namespace GraduacionWeb.API.Data
                 .WithMany()
                 .HasForeignKey(p => p.GraduadoId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Restricciones de Graduado
+            modelBuilder.Entity<Graduado>(e =>
+            {
+                e.HasIndex(g => g.CodigoRegistro).IsUnique();
+                e.HasIndex(g => g.Identificador).IsUnique();
+                e.Property(g => g.Identificador).HasMaxLength(50);
+                e.Property(g => g.CodigoRegistro).HasMaxLength(8);
+                e.Property(g => g.TotalGraduacion).HasPrecision(18, 2);
+            });
+
+            // Restricciones de Pago
+            modelBuilder.Entity<Pago>(e =>
+            {
+                e.Property(p => p.Monto).HasPrecision(18, 2);
+                e.Property(p => p.Concepto).HasMaxLength(200);
+                e.Property(p => p.Estado).HasMaxLength(20);
+            });
         }
     }
 }

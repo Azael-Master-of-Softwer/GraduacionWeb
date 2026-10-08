@@ -34,6 +34,13 @@ namespace GraduacionWeb.API.Controllers
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> CrearGraduado(GraduadoCrearDto dto)
         {
+            var identificador = dto.Identificador.Trim();
+
+            if (await _context.Graduados.AnyAsync(g => g.Identificador == identificador))
+            {
+                return Conflict("Ya existe un graduado con ese identificador.");
+            }
+
             string codigo;
 
             do
@@ -48,7 +55,7 @@ namespace GraduacionWeb.API.Controllers
 
             var graduado = new Graduado
             {
-                Identificador = dto.Identificador.Trim(),
+                Identificador = identificador,
                 TotalGraduacion = dto.TotalGraduacion,
                 CodigoRegistro = codigo,
                 ApplicationUserId = null

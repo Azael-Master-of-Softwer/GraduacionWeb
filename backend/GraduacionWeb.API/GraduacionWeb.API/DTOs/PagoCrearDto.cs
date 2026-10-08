@@ -12,6 +12,7 @@ namespace GraduacionWeb.API.DTOs
         public decimal Monto { get; set; }
 
         [Required]
+        [StringLength(200)]
         public string Concepto { get; set; } = string.Empty;
     }
 }
