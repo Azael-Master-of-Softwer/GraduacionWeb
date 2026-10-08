@@ -40,12 +40,13 @@ namespace GraduacionWeb.API.Controllers
         [HttpPost("registro")]
         public async Task<IActionResult> Registro(RegistroDto registro)
         {
-            // 1. Buscar el graduado mediante su código
-            var graduado = await _context.Graduados
-                .FirstOrDefaultAsync(g =>
-                    g.CodigoRegistro == registro.CodigoRegistro);
+            // 1. Normalizar el código (sin espacios y en mayúsculas)
+            var codigo = registro.CodigoRegistro.Trim().ToUpperInvariant();
 
-            // 2. Comprobar que el código existe
+            // 2. Buscar el graduado mediante su código
+            var graduado = await _context.Graduados
+                .FirstOrDefaultAsync(g => g.CodigoRegistro == codigo);
+
             if (graduado == null)
             {
                 return BadRequest("El código de registro no es válido.");
@@ -57,7 +58,12 @@ namespace GraduacionWeb.API.Controllers
                 return BadRequest("Este código de registro ya fue utilizado.");
             }
 
-            // 4. Crear el usuario
+            // 4. Todo lo siguiente se hace dentro de una transacción:
+            //    si algo falla o se hace return antes del Commit, se deshace todo
+            await using var transaccion =
+                await _context.Database.BeginTransactionAsync();
+
+            // 5. Crear el usuario
             var usuario = new ApplicationUser
             {
                 UserName = registro.Email,
@@ -75,7 +81,7 @@ namespace GraduacionWeb.API.Controllers
                 return BadRequest(resultado.Errors);
             }
 
-            // 5. Asignar el rol de GRADUADO
+            // 6. Asignar el rol de GRADUADO
             var resultadoRol = await _userManager.AddToRoleAsync(
                 usuario,
                 "GRADUADO"
@@ -83,17 +89,25 @@ namespace GraduacionWeb.API.Controllers
 
             if (!resultadoRol.Succeeded)
             {
-                await _userManager.DeleteAsync(usuario);
-
                 return BadRequest(resultadoRol.Errors);
             }
 
-            // 6. Vincular el usuario con el graduado
-            graduado.ApplicationUserId = usuario.Id;
+            // 7. Vincular el usuario con el graduado, solo si sigue libre
+            var filasActualizadas = await _context.Graduados
+                .Where(g => g.Id == graduado.Id && g.ApplicationUserId == null)
+                .ExecuteUpdateAsync(s =>
+                    s.SetProperty(g => g.ApplicationUserId, usuario.Id));
 
-            await _context.SaveChangesAsync();
+            if (filasActualizadas == 0)
+            {
+                // Otra persona usó el código justo antes: se cancela todo
+                return BadRequest("Este código de registro ya fue utilizado.");
+            }
 
-            // 7. Respuesta
+            // 8. Confirmar la transacción
+            await transaccion.CommitAsync();
+
+            // 9. Respuesta
             return Ok(new
             {
                 mensaje = "Usuario y graduado creados correctamente",
