@@ -2,6 +2,7 @@
 using GraduacionWeb.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using GraduacionWeb.API.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace GraduacionWeb.API.Controllers
@@ -30,10 +31,15 @@ namespace GraduacionWeb.API.Controllers
         // Crear un nuevo aviso
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> CrearAviso(Aviso aviso)
+        public async Task<IActionResult> CrearAviso(AvisoCrearDto dto)
         {
-            aviso.Fecha = DateTime.UtcNow;
-            aviso.Estado = "ACTIVO";
+            var aviso = new Aviso
+            {
+                Titulo = dto.Titulo.Trim(),
+                Mensaje = dto.Mensaje.Trim(),
+                Fecha = DateTime.UtcNow,
+                Estado = "ACTIVO"
+            };
 
             _context.Avisos.Add(aviso);
 
@@ -41,12 +47,11 @@ namespace GraduacionWeb.API.Controllers
 
             return Ok(aviso);
         }
+
         // Editar un aviso existente
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> EditarAviso(
-            int id,
-            Aviso avisoActualizado)
+        public async Task<IActionResult> EditarAviso(int id, AvisoEditarDto dto)
         {
             var aviso = await _context.Avisos
                 .FirstOrDefaultAsync(a => a.Id == id);
@@ -56,9 +61,9 @@ namespace GraduacionWeb.API.Controllers
                 return NotFound("El aviso no existe.");
             }
 
-            aviso.Titulo = avisoActualizado.Titulo;
-            aviso.Mensaje = avisoActualizado.Mensaje;
-            aviso.Estado = avisoActualizado.Estado;
+            aviso.Titulo = dto.Titulo.Trim();
+            aviso.Mensaje = dto.Mensaje.Trim();
+            aviso.Estado = dto.Estado;
 
             await _context.SaveChangesAsync();
 
