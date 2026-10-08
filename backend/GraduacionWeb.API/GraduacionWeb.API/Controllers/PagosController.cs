@@ -62,7 +62,7 @@ namespace GraduacionWeb.API.Controllers
                 GraduadoId = dto.GraduadoId,
                 Monto = dto.Monto,
                 Concepto = dto.Concepto,
-                Fecha = DateTime.Now,
+                Fecha = DateTime.UtcNow,
                 Estado = "CONFIRMADO"
             };
 

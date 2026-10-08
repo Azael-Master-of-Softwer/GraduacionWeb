@@ -3,6 +3,7 @@ using GraduacionWeb.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using GraduacionWeb.API.Helpers;
 
 namespace GraduacionWeb.API.Controllers
 {
@@ -32,7 +33,7 @@ namespace GraduacionWeb.API.Controllers
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> CrearEvento(EventoCalendario evento)
         {
-            evento.Fecha = evento.Fecha.ToUniversalTime();
+            evento.Fecha = FechaHelper.AUtc(evento.Fecha);
 
             _context.EventosCalendario.Add(evento);
 
@@ -55,7 +56,7 @@ namespace GraduacionWeb.API.Controllers
                 return NotFound("El evento no existe.");
             }
 
-            evento.Fecha = eventoActualizado.Fecha.ToUniversalTime();
+            evento.Fecha = FechaHelper.AUtc(eventoActualizado.Fecha);
             evento.Titulo = eventoActualizado.Titulo;
             evento.Tipo = eventoActualizado.Tipo;
             evento.Descripcion = eventoActualizado.Descripcion;

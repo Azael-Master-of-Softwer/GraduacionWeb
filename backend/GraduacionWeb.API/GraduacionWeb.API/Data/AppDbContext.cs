@@ -36,11 +36,6 @@ namespace GraduacionWeb.API.Data
                 .WithMany()
                 .HasForeignKey(p => p.GraduadoId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            // Fecha del pago
-            modelBuilder.Entity<Pago>()
-                .Property(p => p.Fecha)
-                .HasColumnType("timestamp without time zone");
         }
     }
 }
