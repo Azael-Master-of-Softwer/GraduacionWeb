@@ -28,14 +28,14 @@ namespace GraduacionWeb.API.Data
                 .HasOne(g => g.ApplicationUser)
                 .WithOne()
                 .HasForeignKey<Graduado>(g => g.ApplicationUserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             // Relación Graduado → Pagos
             modelBuilder.Entity<Pago>()
                 .HasOne(p => p.Graduado)
                 .WithMany()
                 .HasForeignKey(p => p.GraduadoId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
