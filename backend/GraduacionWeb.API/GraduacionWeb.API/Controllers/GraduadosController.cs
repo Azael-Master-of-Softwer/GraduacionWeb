@@ -68,38 +68,24 @@ namespace GraduacionWeb.API.Controllers
             });
         }
 
-        // Obtener el resumen de un graduado
-        [HttpGet("{id}/resumen")]
-        [Authorize]
-        public async Task<IActionResult> ObtenerResumen(int id)
+        // Arma el resumen de un graduado (lo usan los dos endpoints)
+        private async Task<ResumenGraduadoDto> ConstruirResumenAsync(Graduado graduado)
         {
-            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var graduado = await _context.Graduados
-                .FirstOrDefaultAsync(g =>
-                    g.Id == id &&
-                    g.ApplicationUserId == usuarioId);
-
-            if (graduado == null)
-            {
-                return NotFound("Graduado no encontrado.");
-            }
-
             var pagos = await _context.Pagos
-                .Where(p => p.GraduadoId == id)
+                .Where(p => p.GraduadoId == graduado.Id)
+                .OrderBy(p => p.Fecha)
                 .ToListAsync();
 
             var totalPagado = pagos
                 .Where(p => p.Estado == "CONFIRMADO")
                 .Sum(p => p.Monto);
 
-            var resumen = new ResumenGraduadoDto
+            return new ResumenGraduadoDto
             {
                 Identificador = graduado.Identificador,
                 TotalGraduacion = graduado.TotalGraduacion,
                 TotalPagado = totalPagado,
                 Pendiente = graduado.TotalGraduacion - totalPagado,
-
                 Pagos = pagos.Select(p => new PagoResumenDto
                 {
                     Fecha = p.Fecha,
@@ -108,10 +94,35 @@ namespace GraduacionWeb.API.Controllers
                     Estado = p.Estado
                 }).ToList()
             };
-
-            return Ok(resumen);
         }
 
+        // Resumen de un graduado: el ADMIN ve cualquiera, el GRADUADO solo el suyo
+        [HttpGet("{id}/resumen")]
+        [Authorize(Roles = "ADMIN,GRADUADO")]
+        public async Task<IActionResult> ObtenerResumen(int id)
+        {
+            var graduado = await _context.Graduados
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (graduado == null)
+            {
+                return NotFound("Graduado no encontrado.");
+            }
+
+            if (!User.IsInRole("ADMIN"))
+            {
+                var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (graduado.ApplicationUserId != usuarioId)
+                {
+                    return NotFound("Graduado no encontrado.");
+                }
+            }
+
+            return Ok(await ConstruirResumenAsync(graduado));
+        }
+
+        // Resumen del graduado que tiene la sesión iniciada
         [HttpGet("mi-resumen")]
         [Authorize(Roles = "GRADUADO")]
         public async Task<IActionResult> ObtenerMiResumen()
@@ -126,31 +137,8 @@ namespace GraduacionWeb.API.Controllers
                 return NotFound("No existe un registro de graduado asociado a este usuario.");
             }
 
-            var pagos = await _context.Pagos
-                .Where(p => p.GraduadoId == graduado.Id)
-                .ToListAsync();
-
-            var totalPagado = pagos
-                .Where(p => p.Estado == "CONFIRMADO")
-                .Sum(p => p.Monto);
-
-            var resumen = new ResumenGraduadoDto
-            {
-                Identificador = graduado.Identificador,
-                TotalGraduacion = graduado.TotalGraduacion,
-                TotalPagado = totalPagado,
-                Pendiente = graduado.TotalGraduacion - totalPagado,
-                Pagos = pagos.Select(p => new PagoResumenDto
-                {
-                    Fecha = p.Fecha,
-                    Monto = p.Monto,
-                    Concepto = p.Concepto,
-                    Estado = p.Estado
-                }).ToList()
-            };
-
-            return Ok(resumen);
+            return Ok(await ConstruirResumenAsync(graduado));
         }
-
     }
 }
+
