@@ -13,8 +13,6 @@ namespace GraduacionWeb.API.Data
 
         public DbSet<Graduado> Graduados { get; set; }
 
-        public DbSet<Usuario> Usuarios { get; set; }
-
         public DbSet<Pago> Pagos { get; set; }
 
         public DbSet<EventoCalendario> EventosCalendario { get; set; }
