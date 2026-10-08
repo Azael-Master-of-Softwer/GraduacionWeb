@@ -115,8 +115,16 @@ namespace GraduacionWeb.API.Controllers
             var resultado = await _signInManager.CheckPasswordSignInAsync(
                 usuario,
                 login.Password,
-                false
+                true
             );
+
+            if (resultado.IsLockedOut)
+            {
+                return StatusCode(
+                    StatusCodes.Status429TooManyRequests,
+                    "Demasiados intentos fallidos. Intenta de nuevo en unos minutos."
+                );
+            }
 
             if (!resultado.Succeeded)
             {

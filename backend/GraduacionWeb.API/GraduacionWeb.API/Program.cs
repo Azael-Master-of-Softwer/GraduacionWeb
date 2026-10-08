@@ -41,7 +41,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 // Configuración de Identity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+})
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
