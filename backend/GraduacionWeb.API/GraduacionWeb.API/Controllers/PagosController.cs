@@ -19,12 +19,23 @@ namespace GraduacionWeb.API.Controllers
         }
 
         // Obtener todos los pagos
+        // Obtener todos los pagos
         [HttpGet]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> ObtenerPagos()
         {
             var pagos = await _context.Pagos
-                .Include(p => p.Graduado)
+                .OrderByDescending(p => p.Fecha)
+                .Select(p => new PagoListadoDto
+                {
+                    Id = p.Id,
+                    GraduadoId = p.GraduadoId,
+                    Identificador = p.Graduado!.Identificador,
+                    Fecha = p.Fecha,
+                    Monto = p.Monto,
+                    Concepto = p.Concepto,
+                    Estado = p.Estado
+                })
                 .ToListAsync();
 
             return Ok(pagos);
