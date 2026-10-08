@@ -17,12 +17,19 @@ namespace GraduacionWeb.API.Controllers
         {
             _context = context;
         }
-        // Obtener todos los avisos
+        // Obtener avisos: el ADMIN ve todos, el GRADUADO solo los ACTIVOS
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> ObtenerAvisos()
         {
-            var avisos = await _context.Avisos
+            var consulta = _context.Avisos.AsQueryable();
+
+            if (!User.IsInRole("ADMIN"))
+            {
+                consulta = consulta.Where(a => a.Estado == "ACTIVO");
+            }
+
+            var avisos = await consulta
                 .OrderByDescending(a => a.Fecha)
                 .ToListAsync();
 
