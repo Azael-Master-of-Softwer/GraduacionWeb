@@ -185,10 +185,13 @@ using (var scope = app.Services.CreateScope())
 
             if (resultado.Succeeded)
             {
-                await userManager.AddToRoleAsync(
-                    admin,
-                    "ADMIN"
-                );
+                await userManager.AddToRoleAsync(admin, "ADMIN");
+            }
+            else
+            {
+                app.Logger.LogError(
+                    "No se pudo crear el administrador: {Errores}",
+                    string.Join("; ", resultado.Errors.Select(e => e.Description)));
             }
         }
     }
