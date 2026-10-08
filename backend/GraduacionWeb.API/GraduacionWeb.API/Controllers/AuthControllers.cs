@@ -190,39 +190,5 @@ namespace GraduacionWeb.API.Controllers
                 token = tokenString
             });
         }
-        //Perfil protegido
-        [HttpGet("perfil")]
-        [Microsoft.AspNetCore.Authorization.Authorize]
-        public IActionResult Perfil()
-        {
-            return Ok(new
-            {
-                mensaje = "Tienes acceso a una zona protegida.",
-                usuario = User.Identity?.Name
-            });
-        }
-        //Zona de administrador protegida
-        [HttpGet("admin")]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "ADMIN")]
-        public IActionResult ZonaAdmin()
-        {
-            return Ok(new
-            {
-                mensaje = "Tienes acceso a la zona de administrador.",
-                usuario = User.Identity?.Name
-            });
-        }
-        //Zona de graduado protegida
-        [HttpGet("graduado")]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "GRADUADO")]
-        public IActionResult ZonaGraduado()
-        {
-            return Ok(new
-            {
-                mensaje = "Tienes acceso a la zona de graduados.",
-                usuario = User.Identity?.Name
-            });
-        }
-
     }
 }
