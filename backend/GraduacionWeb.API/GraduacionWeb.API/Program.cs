@@ -52,6 +52,32 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddDefaultTokenProviders();
 
 // Configuración de JWT
+var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+
+if (string.IsNullOrWhiteSpace(jwtKey) ||
+    Encoding.UTF8.GetByteCount(jwtKey) < 32)
+{
+    throw new InvalidOperationException(
+        "Falta la configuración 'Jwt:Key' o tiene menos de 32 caracteres. " +
+        "Configúrala con: dotnet user-secrets set \"Jwt:Key\" \"<clave larga y aleatoria>\"");
+}
+
+if (string.IsNullOrWhiteSpace(jwtIssuer))
+{
+    throw new InvalidOperationException(
+        "Falta la configuración 'Jwt:Issuer'. " +
+        "Configúrala con: dotnet user-secrets set \"Jwt:Issuer\" \"<valor>\"");
+}
+
+if (string.IsNullOrWhiteSpace(jwtAudience))
+{
+    throw new InvalidOperationException(
+        "Falta la configuración 'Jwt:Audience'. " +
+        "Configúrala con: dotnet user-secrets set \"Jwt:Audience\" \"<valor>\"");
+}
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -66,13 +92,11 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
 
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
 
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(
-                builder.Configuration["Jwt:Key"]!
-            )
+            Encoding.UTF8.GetBytes(jwtKey)
         )
     };
 });
