@@ -32,7 +32,7 @@ namespace GraduacionWeb.API.Controllers
         // Crear un nuevo graduado
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> CrearGraduado(Graduado graduado)
+        public async Task<IActionResult> CrearGraduado(GraduadoCrearDto dto)
         {
             string codigo;
 
@@ -46,8 +46,13 @@ namespace GraduacionWeb.API.Controllers
                 g => g.CodigoRegistro == codigo
             ));
 
-            graduado.CodigoRegistro = codigo;
-            graduado.ApplicationUserId = null;
+            var graduado = new Graduado
+            {
+                Identificador = dto.Identificador.Trim(),
+                TotalGraduacion = dto.TotalGraduacion,
+                CodigoRegistro = codigo,
+                ApplicationUserId = null
+            };
 
             _context.Graduados.Add(graduado);
 
