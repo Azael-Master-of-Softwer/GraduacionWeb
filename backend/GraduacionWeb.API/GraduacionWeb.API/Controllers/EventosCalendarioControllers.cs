@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GraduacionWeb.API.Helpers;
+using GraduacionWeb.API.DTOs;
 
 namespace GraduacionWeb.API.Controllers
 {
@@ -31,9 +32,16 @@ namespace GraduacionWeb.API.Controllers
         // Crear un nuevo evento en el calendario
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> CrearEvento(EventoCalendario evento)
+        public async Task<IActionResult> CrearEvento(EventoCrearDto dto)
         {
-            evento.Fecha = FechaHelper.AUtc(evento.Fecha);
+            var evento = new EventoCalendario
+            {
+                Fecha = FechaHelper.AUtc(dto.Fecha!.Value),
+                Titulo = dto.Titulo.Trim(),
+                Tipo = dto.Tipo,
+                Descripcion = dto.Descripcion.Trim(),
+                Estado = "PENDIENTE"
+            };
 
             _context.EventosCalendario.Add(evento);
 
@@ -44,9 +52,7 @@ namespace GraduacionWeb.API.Controllers
         // Editar un evento existente en el calendario
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> EditarEvento(
-            int id,
-            EventoCalendario eventoActualizado)
+        public async Task<IActionResult> EditarEvento(int id, EventoEditarDto dto)
         {
             var evento = await _context.EventosCalendario
                 .FirstOrDefaultAsync(e => e.Id == id);
@@ -56,11 +62,11 @@ namespace GraduacionWeb.API.Controllers
                 return NotFound("El evento no existe.");
             }
 
-            evento.Fecha = FechaHelper.AUtc(eventoActualizado.Fecha);
-            evento.Titulo = eventoActualizado.Titulo;
-            evento.Tipo = eventoActualizado.Tipo;
-            evento.Descripcion = eventoActualizado.Descripcion;
-            evento.Estado = eventoActualizado.Estado;
+            evento.Fecha = FechaHelper.AUtc(dto.Fecha!.Value);
+            evento.Titulo = dto.Titulo.Trim();
+            evento.Tipo = dto.Tipo;
+            evento.Descripcion = dto.Descripcion.Trim();
+            evento.Estado = dto.Estado;
 
             await _context.SaveChangesAsync();
 
