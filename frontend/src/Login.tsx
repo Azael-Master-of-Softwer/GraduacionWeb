@@ -2,9 +2,12 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { api, ApiError } from './api'
 
-type Props = { onLogin: (token: string) => void }
+type Props = {
+  onLogin: (token: string) => void
+  onIrARegistro: () => void
+}
 
-export default function Login({ onLogin }: Props) {
+export default function Login({ onLogin, onIrARegistro }: Props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -71,6 +74,13 @@ export default function Login({ onLogin }: Props) {
           </p>
         )}
       </form>
+
+      <p className="suave pie">
+        ¿Tienes un código de registro?{' '}
+        <button type="button" className="enlace" onClick={onIrARegistro}>
+          Crear mi cuenta
+        </button>
+      </p>
     </main>
   )
 }

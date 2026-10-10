@@ -178,3 +178,21 @@ code {
   font-family: ui-monospace, Consolas, monospace;
   letter-spacing: 0.08em;
 }
+
+/* ---- Enlaces y textos de apoyo ---- */
+button.enlace {
+  background: none;
+  color: var(--acento);
+  padding: 0;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.pie {
+  margin: 1rem 0 0;
+}
+
+.ayuda {
+  margin: -0.4rem 0 0;
+  font-size: 0.8rem;
+}

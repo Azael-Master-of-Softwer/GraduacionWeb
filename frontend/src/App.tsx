@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Login from './Login'
 import PanelAdmin from './PanelAdmin'
+import Registro from './Registro'
 import {
   borrarSesion,
   cargarSesion,
@@ -11,6 +12,7 @@ import type { Sesion } from './session'
 
 export default function App() {
   const [sesion, setSesion] = useState<Sesion | null>(cargarSesion)
+  const [modo, setModo] = useState<'login' | 'registro'>('login')
 
   function iniciar(token: string) {
     const nueva = crearSesion(token)
@@ -23,9 +25,16 @@ export default function App() {
   function salir() {
     borrarSesion()
     setSesion(null)
+    setModo('login')
   }
 
-  if (!sesion) return <Login onLogin={iniciar} />
+  if (!sesion) {
+    return modo === 'registro' ? (
+      <Registro onRegistrado={iniciar} onIrALogin={() => setModo('login')} />
+    ) : (
+      <Login onLogin={iniciar} onIrARegistro={() => setModo('registro')} />
+    )
+  }
 
   if (sesion.roles.includes('ADMIN')) {
     return <PanelAdmin sesion={sesion} onSalir={salir} />

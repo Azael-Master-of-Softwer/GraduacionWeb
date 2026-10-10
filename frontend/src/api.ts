@@ -11,6 +11,21 @@ export class ApiError extends Error {
   }
 }
 
+const TRADUCCIONES: Record<string, string> = {
+  PasswordTooShort: 'La contraseña debe tener al menos 6 caracteres.',
+  PasswordRequiresNonAlphanumeric:
+    'La contraseña debe incluir al menos un símbolo (por ejemplo ! # $ %).',
+  PasswordRequiresDigit: 'La contraseña debe incluir al menos un número.',
+  PasswordRequiresLower:
+    'La contraseña debe incluir al menos una letra minúscula.',
+  PasswordRequiresUpper:
+    'La contraseña debe incluir al menos una letra mayúscula.',
+  DuplicateUserName: 'Ya existe una cuenta con ese correo.',
+  DuplicateEmail: 'Ya existe una cuenta con ese correo.',
+  InvalidUserName: 'El correo no es válido.',
+  InvalidEmail: 'El correo no es válido.',
+}
+
 function mensajeDeError(texto: string, status: number): string {
   if (!texto) {
     return status === 429
@@ -21,13 +36,16 @@ function mensajeDeError(texto: string, status: number): string {
     const dato: unknown = JSON.parse(texto)
     if (typeof dato === 'string') return dato
     if (Array.isArray(dato)) {
-      return dato
-        .map((d) =>
-          d && typeof d === 'object' && 'description' in d
-            ? String((d as { description: unknown }).description)
-            : String(d),
-        )
-        .join(' ')
+      const mensajes = dato.map((d) => {
+        if (d && typeof d === 'object') {
+          const e = d as { code?: unknown; description?: unknown }
+          const traducido = typeof e.code === 'string' ? TRADUCCIONES[e.code] : undefined
+          if (traducido) return traducido
+          if (e.description !== undefined) return String(e.description)
+        }
+        return String(d)
+      })
+      return [...new Set(mensajes)].join(' ')
     }
     if (dato && typeof dato === 'object') {
       const o = dato as { errors?: Record<string, string[]>; title?: string }
