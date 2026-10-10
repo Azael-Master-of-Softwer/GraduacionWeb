@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { api, ApiError } from './api'
+import CampoContrasena from './CampoContrasena'
 
 type Props = {
   onRegistrado: (token: string) => void
@@ -100,13 +101,11 @@ export default function Registro({ onRegistrado, onIrALogin }: Props) {
 
         <label>
           Contraseña
-          <input
-            type="password"
+          <CampoContrasena
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={setPassword}
             autoComplete="new-password"
             minLength={6}
-            required
           />
         </label>
         <p className="suave ayuda">
@@ -115,12 +114,10 @@ export default function Registro({ onRegistrado, onIrALogin }: Props) {
 
         <label>
           Confirmar contraseña
-          <input
-            type="password"
+          <CampoContrasena
             value={confirmar}
-            onChange={(e) => setConfirmar(e.target.value)}
+            onChange={setConfirmar}
             autoComplete="new-password"
-            required
           />
         </label>
 

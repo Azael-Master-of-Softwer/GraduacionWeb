@@ -196,3 +196,33 @@ button.enlace {
   margin: -0.4rem 0 0;
   font-size: 0.8rem;
 }
+
+/* ---- Campo de contraseña con ojito ---- */
+.campo-contrasena {
+  position: relative;
+}
+
+.campo-contrasena input {
+  width: 100%;
+  padding-right: 2.8rem;
+}
+
+.campo-contrasena input::-ms-reveal {
+  display: none; /* oculta el ojito propio de Edge para no duplicarlo */
+}
+
+button.ojo {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  color: var(--suave);
+  padding: 0.35rem;
+  line-height: 0;
+  border-radius: 8px;
+}
+
+button.ojo:hover {
+  color: var(--texto);
+}

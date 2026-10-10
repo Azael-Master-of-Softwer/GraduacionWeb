@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { api, ApiError } from './api'
+import CampoContrasena from './CampoContrasena'
 
 type Props = {
   onLogin: (token: string) => void
@@ -53,12 +54,10 @@ export default function Login({ onLogin, onIrARegistro }: Props) {
 
         <label>
           Contraseña
-          <input
-            type="password"
+          <CampoContrasena
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={setPassword}
             autoComplete="current-password"
-            required
           />
         </label>
 
