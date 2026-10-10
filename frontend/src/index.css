@@ -98,3 +98,83 @@ button:disabled {
   color: var(--error);
   margin: 0;
 }
+
+/* ---- Panel de administración ---- */
+.tarjeta.ancha {
+  max-width: 820px;
+}
+
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.encabezado p {
+  margin: 0;
+}
+
+h2 {
+  margin: 1rem 0 0.5rem;
+}
+
+button.secundario {
+  background: transparent;
+  color: var(--texto);
+  border: 1px solid var(--borde);
+}
+
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-end;
+  margin-top: 0.5rem;
+}
+
+.fila label {
+  flex: 1 1 180px;
+}
+
+.aviso-ok {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px dashed var(--acento);
+  border-radius: 12px;
+}
+
+.aviso-ok p {
+  margin: 0 0 0.5rem;
+}
+
+.codigo {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 1.6rem;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid var(--borde);
+  white-space: nowrap;
+}
+
+code {
+  font-family: ui-monospace, Consolas, monospace;
+  letter-spacing: 0.08em;
+}
