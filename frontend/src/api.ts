@@ -72,5 +72,11 @@ export async function api<T>(
     const texto = await respuesta.text()
     throw new ApiError(respuesta.status, mensajeDeError(texto, respuesta.status))
   }
-  return (await respuesta.json()) as T
+  const texto = await respuesta.text()
+  if (!texto) return undefined as T
+  try {
+    return JSON.parse(texto) as T
+  } catch {
+    return texto as unknown as T // la API a veces responde solo un texto
+  }
 }

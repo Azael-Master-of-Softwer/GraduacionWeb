@@ -226,3 +226,113 @@ button.ojo {
 button.ojo:hover {
   color: var(--texto);
 }
+
+/* ---- Pestañas, listas y formularios del panel ---- */
+select,
+textarea {
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+}
+
+select option {
+  background: var(--tarjeta);
+  color: var(--texto);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.pestanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--borde);
+}
+
+button.pestana {
+  background: none;
+  color: var(--suave);
+  border-radius: 10px 10px 0 0;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 2px solid transparent;
+}
+
+button.pestana.activa {
+  color: var(--texto);
+  border-bottom-color: var(--acento);
+}
+
+.columna {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.item {
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.item.inactivo {
+  opacity: 0.6;
+}
+
+.item p {
+  margin: 0.3rem 0;
+}
+
+.item-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mensaje {
+  white-space: pre-wrap;
+}
+
+.etiqueta {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  color: var(--suave);
+  white-space: nowrap;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+button.peligro {
+  background: transparent;
+  color: var(--error);
+  border: 1px solid var(--error);
+}
+
+.ok {
+  color: #1f8a55;
+  margin: 0.5rem 0 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ok {
+    color: #5cc08a;
+  }
+}
+
+.resumen-total {
+  margin: 1rem 0 0;
+}
