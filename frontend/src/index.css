@@ -8,6 +8,7 @@
   --error: #b3261e;
   font-family: system-ui, 'Segoe UI', sans-serif;
   color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,6 +36,7 @@ body {
 #root {
   min-height: 100svh;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding: 1rem;
 }
@@ -46,6 +48,7 @@ body {
   border: 1px solid var(--borde);
   border-radius: 16px;
   padding: 1.5rem;
+  min-width: 0;
 }
 
 h1 {
@@ -379,4 +382,88 @@ button.peligro {
 
 .item.resalte {
   border-color: var(--acento);
+}
+
+/* ---- Ajustes para celular ---- */
+.encabezado {
+  flex-wrap: wrap;
+}
+
+.encabezado p,
+.mensaje,
+.item-cabecera strong {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  #root {
+    padding: 0.5rem;
+  }
+
+  .tarjeta {
+    padding: 1rem;
+    border-radius: 14px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  /* Las tablas se vuelven tarjetas: una por fila */
+  .tabla-contenedor {
+    overflow-x: visible;
+  }
+
+  table,
+  tbody,
+  tr,
+  td {
+    display: block;
+  }
+
+  thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  tr {
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    padding: 0.4rem 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: none;
+    padding: 0.25rem 0;
+    white-space: normal;
+    text-align: right;
+  }
+
+  td::before {
+    content: attr(data-label);
+    color: var(--suave);
+    font-size: 0.85rem;
+    text-align: left;
+  }
+
+  /* Las tres cifras del progreso caben en una sola fila */
+  .cifras {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .cifras > div {
+    padding: 0.6rem 0.5rem;
+  }
+
+  .cifras strong {
+    font-size: 0.95rem;
+  }
 }

@@ -174,10 +174,10 @@ export default function Graduados({ token }: Props) {
             <tbody>
               {lista.map((g) => (
                 <tr key={g.id}>
-                  <td>{g.identificador}</td>
-                  <td>{dinero(g.totalGraduacion)}</td>
-                  <td>{g.applicationUserId ? 'Registrado' : 'Pendiente'}</td>
-                  <td>
+                  <td data-label="Identificador">{g.identificador}</td>
+                  <td data-label="Total">{dinero(g.totalGraduacion)}</td>
+                  <td data-label="Estado">{g.applicationUserId ? 'Registrado' : 'Pendiente'}</td>
+                  <td data-label="Código">
                     {g.applicationUserId ? (
                       <span className="suave">—</span>
                     ) : (

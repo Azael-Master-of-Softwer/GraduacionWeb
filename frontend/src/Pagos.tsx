@@ -148,11 +148,11 @@ export default function Pagos({ token }: { token: string }) {
             <tbody>
               {pagos.datos.map((p) => (
                 <tr key={p.id}>
-                  <td>{fechaHora(p.fecha)}</td>
-                  <td>{p.identificador}</td>
-                  <td>{p.concepto}</td>
-                  <td>{dinero(p.monto)}</td>
-                  <td>{p.estado}</td>
+                  <td data-label="Fecha">{fechaHora(p.fecha)}</td>
+                  <td data-label="Graduado">{p.identificador}</td>
+                  <td data-label="Concepto">{p.concepto}</td>
+                  <td data-label="Monto">{dinero(p.monto)}</td>
+                  <td data-label="Estado">{p.estado}</td>
                 </tr>
               ))}
             </tbody>
