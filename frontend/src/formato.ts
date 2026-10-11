@@ -8,3 +8,8 @@ export const fechaHora = (iso: string) =>
 // Fechas de calendario: se guardan al mediodía UTC para que no cambien de día
 export const soloFecha = (iso: string) =>
   new Date(iso).toLocaleDateString('es-MX', { dateStyle: 'medium', timeZone: 'UTC' })
+
+// Fecha de hoy (según el reloj de quien mira la página) como AAAA-MM-DD
+export function hoyISO(): string {
+  return new Date().toLocaleDateString('en-CA')
+}

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Login from './Login'
 import PanelAdmin from './PanelAdmin'
+import PanelGraduado from './PanelGraduado'
 import Registro from './Registro'
 import {
   borrarSesion,
@@ -40,14 +41,5 @@ export default function App() {
     return <PanelAdmin sesion={sesion} onSalir={salir} />
   }
 
-  return (
-    <main className="tarjeta">
-      <h1>Graduación</h1>
-      <p>
-        Sesión iniciada como <strong>{sesion.email}</strong>
-      </p>
-      <p className="suave">Tu panel de graduado estará disponible pronto.</p>
-      <button onClick={salir}>Cerrar sesión</button>
-    </main>
-  )
+  return <PanelGraduado sesion={sesion} onSalir={salir} />
 }

@@ -336,3 +336,47 @@ button.peligro {
 .resumen-total {
   margin: 1rem 0 0;
 }
+
+/* ---- Panel del graduado ---- */
+.barra {
+  height: 14px;
+  background: var(--borde);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 0.75rem;
+}
+
+.barra > div {
+  height: 100%;
+  background: var(--acento);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.porcentaje {
+  margin: 0.4rem 0 0;
+  font-weight: 700;
+}
+
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.cifras > div {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.75rem;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+}
+
+.cifras strong {
+  font-size: 1.15rem;
+}
+
+.item.resalte {
+  border-color: var(--acento);
+}
