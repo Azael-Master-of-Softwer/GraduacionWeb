@@ -467,3 +467,24 @@ button.peligro {
     font-size: 0.95rem;
   }
 }
+
+/* ---- Inicio: cuenta regresiva y fondos ---- */
+.cuenta {
+  display: grid;
+  gap: 0.2rem;
+  padding: 1rem;
+  border: 1px solid var(--acento);
+  border-radius: 14px;
+  text-align: center;
+  margin: 0.5rem 0 0;
+}
+
+.cuenta-grande {
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+h3 {
+  margin: 1.2rem 0 0.3rem;
+  font-size: 1.05rem;
+}

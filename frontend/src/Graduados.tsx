@@ -61,12 +61,12 @@ export default function Graduados({ token }: Props) {
     setCreado(null)
     setCopiado(false)
 
-    const totalNumero = Number(total)
+    const totalNumero = total.trim() === '' ? null : Number(total)
     if (!identificador.trim()) {
       setError('Escribe el identificador del graduado.')
       return
     }
-    if (!(totalNumero > 0)) {
+    if (totalNumero !== null && !(totalNumero > 0)) {
       setError('El total debe ser mayor a 0.')
       return
     }
@@ -79,7 +79,7 @@ export default function Graduados({ token }: Props) {
           method: 'POST',
           body: JSON.stringify({
             identificador: identificador.trim(),
-            totalGraduacion: totalNumero,
+            ...(totalNumero !== null ? { totalGraduacion: totalNumero } : {}),
           }),
         },
         token,
@@ -121,14 +121,14 @@ export default function Graduados({ token }: Props) {
           />
         </label>
         <label>
-          Total a pagar (MXN)
+          Total a pagar (MXN), opcional
           <input
             type="number"
             min="1"
             step="0.01"
             value={total}
             onChange={(e) => setTotal(e.target.value)}
-            placeholder="Ej. 3000"
+            placeholder="Vacío = meta general"
           />
         </label>
         <button type="submit" disabled={guardando}>

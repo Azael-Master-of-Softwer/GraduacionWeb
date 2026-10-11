@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { api, ApiError } from './api'
 
-// Carga un solo dato (por ejemplo, el resumen del graduado) desde la API
+// Carga un solo dato desde la API y permite volver a cargarlo con recargar()
 export function useDato<T>(ruta: string, token: string) {
   const [dato, setDato] = useState<T | null>(null)
   const [error, setError] = useState('')
+  const [version, setVersion] = useState(0)
 
   useEffect(() => {
     let activo = true
@@ -25,7 +26,9 @@ export function useDato<T>(ruta: string, token: string) {
     return () => {
       activo = false
     }
-  }, [ruta, token])
+  }, [ruta, token, version])
 
-  return { dato, error }
+  const recargar = () => setVersion((v) => v + 1)
+
+  return { dato, error, recargar }
 }

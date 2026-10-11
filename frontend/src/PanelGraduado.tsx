@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { dinero, fechaHora, hoyISO, soloFecha } from './formato'
+import ResumenGeneral from './ResumenGeneral'
 import type { Sesion } from './session'
 import { useDato } from './useDato'
 import { useLista } from './useLista'
@@ -211,6 +212,7 @@ export default function PanelGraduado({ sesion, onSalir }: Props) {
         </button>
       </header>
 
+      <ResumenGeneral token={sesion.token} />
       <MiProgreso token={sesion.token} />
       <MisFechas token={sesion.token} />
       <MisAvisos token={sesion.token} />
