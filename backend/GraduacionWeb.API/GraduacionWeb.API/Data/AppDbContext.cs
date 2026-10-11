@@ -19,6 +19,8 @@ namespace GraduacionWeb.API.Data
 
         public DbSet<Aviso> Avisos { get; set; }
 
+        public DbSet<ConfiguracionGeneral> Configuracion { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -53,6 +55,12 @@ namespace GraduacionWeb.API.Data
                 e.Property(p => p.Monto).HasPrecision(18, 2);
                 e.Property(p => p.Concepto).HasMaxLength(200);
                 e.Property(p => p.Estado).HasMaxLength(20);
+            });
+
+            // Configuración general de la generación
+            modelBuilder.Entity<ConfiguracionGeneral>(e =>
+            {
+                e.Property(c => c.MetaPorAlumno).HasPrecision(18, 2);
             });
         }
     }

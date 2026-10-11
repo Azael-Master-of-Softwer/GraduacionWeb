@@ -41,6 +41,26 @@ namespace GraduacionWeb.API.Controllers
                 return Conflict("Ya existe un graduado con ese identificador.");
             }
 
+            decimal total;
+
+            if (dto.TotalGraduacion.HasValue)
+            {
+                total = dto.TotalGraduacion.Value;
+            }
+            else
+            {
+                var meta = (await _context.Configuracion
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync())?.MetaPorAlumno;
+
+                if (!meta.HasValue)
+                {
+                    return BadRequest("Define primero la meta por alumno en Configuración o indica el total.");
+                }
+
+                total = meta.Value;
+            }
+
             string codigo;
 
             do
@@ -56,7 +76,7 @@ namespace GraduacionWeb.API.Controllers
             var graduado = new Graduado
             {
                 Identificador = identificador,
-                TotalGraduacion = dto.TotalGraduacion,
+                TotalGraduacion = total,
                 CodigoRegistro = codigo,
                 ApplicationUserId = null
             };

@@ -118,6 +118,26 @@ namespace GraduacionWeb.API.Migrations
                     b.ToTable("Avisos");
                 });
 
+            modelBuilder.Entity("GraduacionWeb.API.Models.ConfiguracionGeneral", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("FechaGraduacion")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("MetaPorAlumno")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Configuracion");
+                });
+
             modelBuilder.Entity("GraduacionWeb.API.Models.EventoCalendario", b =>
                 {
                     b.Property<int>("Id")

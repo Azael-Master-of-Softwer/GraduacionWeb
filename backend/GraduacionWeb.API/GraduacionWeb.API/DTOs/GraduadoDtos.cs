@@ -12,6 +12,6 @@ namespace GraduacionWeb.API.DTOs
             ParseLimitsInInvariantCulture = true,
             ConvertValueInInvariantCulture = true,
             ErrorMessage = "El total debe ser mayor a 0.")]
-        public decimal TotalGraduacion { get; set; }
+        public decimal? TotalGraduacion { get; set; }
     }
 }
