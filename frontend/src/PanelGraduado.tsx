@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Encabezado from './Encabezado'
+import FinanzasLectura from './FinanzasLectura'
 import { dinero, fechaHora, hoyISO, soloFecha } from './formato'
 import ResumenGeneral from './ResumenGeneral'
 import type { Sesion } from './session'
@@ -202,6 +203,7 @@ export function ContenidoGraduado({ token }: { token: string }) {
   return (
     <>
       <ResumenGeneral token={token} />
+      <FinanzasLectura token={token} />
       <MiProgreso token={token} />
       <MisFechas token={token} />
       <MisAvisos token={token} />

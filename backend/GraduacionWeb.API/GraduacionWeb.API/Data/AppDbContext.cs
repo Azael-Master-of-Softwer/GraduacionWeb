@@ -21,6 +21,10 @@ namespace GraduacionWeb.API.Data
 
         public DbSet<ConfiguracionGeneral> Configuracion { get; set; }
 
+        public DbSet<Actividad> Actividades { get; set; }
+
+        public DbSet<Movimiento> Movimientos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -61,6 +65,28 @@ namespace GraduacionWeb.API.Data
             modelBuilder.Entity<ConfiguracionGeneral>(e =>
             {
                 e.Property(c => c.MetaPorAlumno).HasPrecision(18, 2);
+            });
+
+            // Actividades y movimientos de dinero
+            modelBuilder.Entity<Actividad>(e =>
+            {
+                e.Property(a => a.Nombre).HasMaxLength(100);
+                e.Property(a => a.Descripcion).HasMaxLength(500);
+                e.Property(a => a.Estado).HasMaxLength(20);
+                e.Property(a => a.Meta).HasPrecision(18, 2);
+            });
+
+            modelBuilder.Entity<Movimiento>(e =>
+            {
+                e.Property(m => m.Tipo).HasMaxLength(10);
+                e.Property(m => m.Monto).HasPrecision(18, 2);
+                e.Property(m => m.Concepto).HasMaxLength(200);
+                e.Property(m => m.RegistradoPor).HasMaxLength(256);
+
+                e.HasOne(m => m.Actividad)
+                    .WithMany()
+                    .HasForeignKey(m => m.ActividadId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

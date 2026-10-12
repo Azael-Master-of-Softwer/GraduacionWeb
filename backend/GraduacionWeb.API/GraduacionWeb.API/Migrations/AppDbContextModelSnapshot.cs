@@ -22,6 +22,41 @@ namespace GraduacionWeb.API.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("GraduacionWeb.API.Models.Actividad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime?>("Fecha")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("Meta")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Actividades");
+                });
+
             modelBuilder.Entity("GraduacionWeb.API.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -209,6 +244,46 @@ namespace GraduacionWeb.API.Migrations
                     b.ToTable("Graduados");
                 });
 
+            modelBuilder.Entity("GraduacionWeb.API.Models.Movimiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ActividadId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Concepto")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Monto")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("RegistradoPor")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActividadId");
+
+                    b.ToTable("Movimientos");
+                });
+
             modelBuilder.Entity("GraduacionWeb.API.Models.Pago", b =>
                 {
                     b.Property<int>("Id")
@@ -384,6 +459,16 @@ namespace GraduacionWeb.API.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("GraduacionWeb.API.Models.Movimiento", b =>
+                {
+                    b.HasOne("GraduacionWeb.API.Models.Actividad", "Actividad")
+                        .WithMany()
+                        .HasForeignKey("ActividadId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Actividad");
                 });
 
             modelBuilder.Entity("GraduacionWeb.API.Models.Pago", b =>

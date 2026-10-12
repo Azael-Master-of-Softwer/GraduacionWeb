@@ -496,3 +496,96 @@ h3 {
   border-color: var(--acento);
   color: var(--acento);
 }
+
+/* ---- Finanzas ---- */
+:root {
+  --acento2: #e3a21a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --acento2: #f0b84a;
+  }
+}
+
+.dona-contenedor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.leyenda {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.leyenda li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.punto {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.barra-fila {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.4rem 0;
+  font-size: 0.9rem;
+}
+
+.barra-nombre {
+  overflow-wrap: anywhere;
+}
+
+.barra-h {
+  height: 12px;
+  background: var(--borde);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barra-h > div {
+  height: 100%;
+  background: var(--acento2);
+}
+
+.barra-h > div.neg {
+  background: var(--error);
+}
+
+.barra-valor {
+  white-space: nowrap;
+}
+
+td.gasto {
+  color: var(--error);
+}
+
+@media (max-width: 640px) {
+  .cifras.cuatro {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .barra-fila {
+    grid-template-columns: 1fr auto;
+  }
+
+  .barra-h {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+}
