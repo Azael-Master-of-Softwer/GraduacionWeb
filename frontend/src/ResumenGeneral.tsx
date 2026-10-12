@@ -56,17 +56,23 @@ function CuentaRegresiva({ fecha }: { fecha: string | null }) {
   )
 }
 
-export function VistaGeneral({ general }: { general: General }) {
+export type Partes = 'todo' | 'cuenta' | 'fondos'
+
+export function VistaGeneral({ general, partes }: { general: General; partes: Partes }) {
   const porcentaje =
     general.totalMeta > 0
       ? Math.min(100, Math.round((general.totalRecaudado / general.totalMeta) * 100))
       : 0
 
+  if (partes === 'cuenta') {
+    return <CuentaRegresiva fecha={general.fechaGraduacion} />
+  }
+
   return (
     <>
-      <CuentaRegresiva fecha={general.fechaGraduacion} />
+      {partes === 'todo' && <CuentaRegresiva fecha={general.fechaGraduacion} />}
 
-      <h3>Fondos de la generación</h3>
+      {partes === 'todo' && <h3>Fondos de la generación</h3>}
       {general.totalMeta > 0 ? (
         <>
           <div
@@ -96,15 +102,18 @@ export function VistaGeneral({ general }: { general: General }) {
   )
 }
 
-export default function ResumenGeneral({ token }: { token: string }) {
+type Props = { token: string; partes?: Partes }
+
+export default function ResumenGeneral({ token, partes = 'todo' }: Props) {
   const { dato, error } = useDato<General>('/api/Configuracion/general', token)
 
   return (
     <section>
-      <h2>Nuestra generación</h2>
+      {partes === 'todo' && <h2>Nuestra generación</h2>}
+      {partes === 'fondos' && <h2>Aportaciones de la generación</h2>}
       {error && <p className="error">{error}</p>}
       {!dato && !error && <p className="suave">Cargando…</p>}
-      {dato && <VistaGeneral general={dato} />}
+      {dato && <VistaGeneral general={dato} partes={partes} />}
     </section>
   )
 }

@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import Login from './Login'
 import PanelAdmin from './PanelAdmin'
-import PanelComite from './PanelComite'
-import PanelGraduado from './PanelGraduado'
+import PanelAlumno from './PanelAlumno'
 import Registro from './Registro'
 import {
   borrarSesion,
@@ -42,9 +41,11 @@ export default function App() {
     return <PanelAdmin sesion={sesion} onSalir={salir} />
   }
 
-  if (sesion.roles.includes('COMITE')) {
-    return <PanelComite sesion={sesion} onSalir={salir} />
-  }
-
-  return <PanelGraduado sesion={sesion} onSalir={salir} />
+  return (
+    <PanelAlumno
+      sesion={sesion}
+      onSalir={salir}
+      esComite={sesion.roles.includes('COMITE')}
+    />
+  )
 }

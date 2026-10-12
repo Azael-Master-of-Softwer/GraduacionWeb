@@ -8,7 +8,10 @@ export type AccionesFinanzas = {
   eliminarActividad: (a: Actividad) => void
 }
 
+export type ModoFinanzas = 'todo' | 'resumen' | 'movimientos'
+
 type Props = {
+  modo?: ModoFinanzas
   resumen: ResumenFinanzas | null
   actividades: Actividad[] | null
   movimientos: Movimiento[] | null
@@ -82,6 +85,7 @@ function BarrasActividades({ actividades }: { actividades: Actividad[] }) {
 }
 
 export default function FinanzasVista({
+  modo = 'todo',
   resumen,
   actividades,
   movimientos,
@@ -90,13 +94,15 @@ export default function FinanzasVista({
 }: Props) {
   const [verDetalle, setVerDetalle] = useState(false)
 
+  const mostrarTabla = modo === 'movimientos' || (modo === 'todo' && verDetalle)
+
   return (
     <section>
-      <h2>Finanzas de la generación</h2>
+      <h2>{modo === 'movimientos' ? 'Movimientos' : 'Finanzas de la generación'}</h2>
       {error && <p className="error">{error}</p>}
       {!resumen && !error && <p className="suave">Cargando…</p>}
 
-      {resumen && (
+      {modo !== 'movimientos' && resumen && (
         <>
           <div className="cifras cuatro">
             <div>
@@ -124,13 +130,13 @@ export default function FinanzasVista({
         </>
       )}
 
-      {actividades && <BarrasActividades actividades={actividades} />}
+      {modo !== 'movimientos' && actividades && <BarrasActividades actividades={actividades} />}
 
-      <h3>Actividades</h3>
-      {actividades && actividades.length === 0 && (
+      {modo !== 'movimientos' && <h3>Actividades</h3>}
+      {modo !== 'movimientos' && actividades && actividades.length === 0 && (
         <p className="suave">Aún no hay actividades registradas.</p>
       )}
-      {actividades?.map((a) => (
+      {modo !== 'movimientos' && actividades?.map((a) => (
         <article key={a.id} className={`item ${a.estado === 'ACTIVA' ? '' : 'inactivo'}`}>
           <div className="item-cabecera">
             <strong>{a.nombre}</strong>
@@ -164,17 +170,19 @@ export default function FinanzasVista({
         </article>
       ))}
 
-      <p>
-        <button type="button" className="enlace" onClick={() => setVerDetalle((v) => !v)}>
-          {verDetalle ? 'Ocultar el detalle de movimientos' : 'Ver el detalle de movimientos'}
-        </button>
-      </p>
+      {modo === 'todo' && (
+        <p>
+          <button type="button" className="enlace" onClick={() => setVerDetalle((v) => !v)}>
+            {verDetalle ? 'Ocultar el detalle de movimientos' : 'Ver el detalle de movimientos'}
+          </button>
+        </p>
+      )}
 
-      {verDetalle && movimientos && movimientos.length === 0 && (
+      {mostrarTabla && movimientos && movimientos.length === 0 && (
         <p className="suave">Aún no hay movimientos registrados.</p>
       )}
 
-      {verDetalle && movimientos && movimientos.length > 0 && (
+      {mostrarTabla && movimientos && movimientos.length > 0 && (
         <div className="tabla-contenedor">
           <table>
             <thead>

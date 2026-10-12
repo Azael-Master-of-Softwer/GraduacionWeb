@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { api, ApiError } from './api'
 
 // Carga una lista desde la API y permite volver a cargarla con recargar()
-export function useLista<T>(ruta: string, token: string) {
+export function useLista<T>(ruta: string, token: string, cadaMs?: number) {
   const [datos, setDatos] = useState<T[] | null>(null)
   const [error, setError] = useState('')
   const [version, setVersion] = useState(0)
@@ -27,6 +27,13 @@ export function useLista<T>(ruta: string, token: string) {
       activo = false
     }
   }, [ruta, token, version])
+
+  // Si se pide, vuelve a cargar la lista cada cierto tiempo
+  useEffect(() => {
+    if (!cadaMs) return
+    const temporizador = setInterval(() => setVersion((v) => v + 1), cadaMs)
+    return () => clearInterval(temporizador)
+  }, [cadaMs])
 
   const recargar = () => setVersion((v) => v + 1)
 
