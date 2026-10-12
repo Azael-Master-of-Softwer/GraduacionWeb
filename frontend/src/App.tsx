@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Login from './Login'
 import PanelAdmin from './PanelAdmin'
+import PanelComite from './PanelComite'
 import PanelGraduado from './PanelGraduado'
 import Registro from './Registro'
 import {
@@ -39,6 +40,10 @@ export default function App() {
 
   if (sesion.roles.includes('ADMIN')) {
     return <PanelAdmin sesion={sesion} onSalir={salir} />
+  }
+
+  if (sesion.roles.includes('COMITE')) {
+    return <PanelComite sesion={sesion} onSalir={salir} />
   }
 
   return <PanelGraduado sesion={sesion} onSalir={salir} />

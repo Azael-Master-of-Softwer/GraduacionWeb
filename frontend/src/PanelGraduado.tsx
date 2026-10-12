@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Encabezado from './Encabezado'
 import { dinero, fechaHora, hoyISO, soloFecha } from './formato'
 import ResumenGeneral from './ResumenGeneral'
 import type { Sesion } from './session'
@@ -197,25 +198,24 @@ function MisFechas({ token }: { token: string }) {
   )
 }
 
+export function ContenidoGraduado({ token }: { token: string }) {
+  return (
+    <>
+      <ResumenGeneral token={token} />
+      <MiProgreso token={token} />
+      <MisFechas token={token} />
+      <MisAvisos token={token} />
+    </>
+  )
+}
+
 type Props = { sesion: Sesion; onSalir: () => void }
 
 export default function PanelGraduado({ sesion, onSalir }: Props) {
   return (
     <main className="tarjeta ancha">
-      <header className="encabezado">
-        <div>
-          <h1>Mi graduación</h1>
-          <p className="suave">{sesion.email}</p>
-        </div>
-        <button className="secundario" onClick={onSalir}>
-          Cerrar sesión
-        </button>
-      </header>
-
-      <ResumenGeneral token={sesion.token} />
-      <MiProgreso token={sesion.token} />
-      <MisFechas token={sesion.token} />
-      <MisAvisos token={sesion.token} />
+      <Encabezado titulo="Mi graduación" sesion={sesion} onSalir={onSalir} />
+      <ContenidoGraduado token={sesion.token} />
     </main>
   )
 }

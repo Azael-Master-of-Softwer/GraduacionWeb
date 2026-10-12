@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import Avisos from './Avisos'
 import Configuracion from './Configuracion'
+import Encabezado from './Encabezado'
 import Eventos from './Eventos'
 import Graduados from './Graduados'
 import Pagos from './Pagos'
 import ResumenGeneral from './ResumenGeneral'
+import Usuarios from './Usuarios'
 import type { Sesion } from './session'
 
-type Seccion = 'inicio' | 'graduados' | 'pagos' | 'avisos' | 'calendario' | 'configuracion'
+type Seccion = 'inicio' | 'graduados' | 'pagos' | 'avisos' | 'calendario' | 'usuarios' | 'configuracion'
 
 const SECCIONES: { id: Seccion; texto: string }[] = [
   { id: 'inicio', texto: 'Inicio' },
@@ -15,6 +17,7 @@ const SECCIONES: { id: Seccion; texto: string }[] = [
   { id: 'pagos', texto: 'Pagos' },
   { id: 'avisos', texto: 'Avisos' },
   { id: 'calendario', texto: 'Calendario' },
+  { id: 'usuarios', texto: 'Usuarios' },
   { id: 'configuracion', texto: 'Configuración' },
 ]
 
@@ -25,15 +28,7 @@ export default function PanelAdmin({ sesion, onSalir }: Props) {
 
   return (
     <main className="tarjeta ancha">
-      <header className="encabezado">
-        <div>
-          <h1>Administración</h1>
-          <p className="suave">{sesion.email}</p>
-        </div>
-        <button className="secundario" onClick={onSalir}>
-          Cerrar sesión
-        </button>
-      </header>
+      <Encabezado titulo="Administración" sesion={sesion} onSalir={onSalir} />
 
       <nav className="pestanas">
         {SECCIONES.map((s) => (
@@ -53,6 +48,7 @@ export default function PanelAdmin({ sesion, onSalir }: Props) {
       {seccion === 'pagos' && <Pagos token={sesion.token} />}
       {seccion === 'avisos' && <Avisos token={sesion.token} />}
       {seccion === 'calendario' && <Eventos token={sesion.token} />}
+      {seccion === 'usuarios' && <Usuarios token={sesion.token} />}
       {seccion === 'configuracion' && <Configuracion token={sesion.token} />}
     </main>
   )

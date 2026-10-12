@@ -149,7 +149,7 @@ using (var scope = app.Services.CreateScope())
         .GetRequiredService<UserManager<ApplicationUser>>();
 
     // Crear roles
-    string[] roles = { "ADMIN", "GRADUADO" };
+    string[] roles = { "ADMIN", "COMITE", "GRADUADO" };
 
     foreach (var role in roles)
     {

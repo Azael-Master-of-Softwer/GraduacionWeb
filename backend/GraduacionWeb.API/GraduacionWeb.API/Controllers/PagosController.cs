@@ -20,7 +20,7 @@ namespace GraduacionWeb.API.Controllers
 
         // Obtener todos los pagos
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN,COMITE")]
         public async Task<IActionResult> ObtenerPagos()
         {
             var pagos = await _context.Pagos

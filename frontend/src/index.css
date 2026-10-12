@@ -488,3 +488,11 @@ h3 {
   margin: 1.2rem 0 0.3rem;
   font-size: 1.05rem;
 }
+
+/* ---- Rango visible ---- */
+.etiqueta.rango {
+  display: inline-block;
+  margin-top: 0.3rem;
+  border-color: var(--acento);
+  color: var(--acento);
+}

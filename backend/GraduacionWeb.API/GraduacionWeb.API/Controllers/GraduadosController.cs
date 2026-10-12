@@ -123,6 +123,40 @@ namespace GraduacionWeb.API.Controllers
             };
         }
 
+        // Estado de cuenta de todos los graduados, sin códigos: ADMIN y COMITE
+        [HttpGet("estado")]
+        [Authorize(Roles = "ADMIN,COMITE")]
+        public async Task<IActionResult> ObtenerEstado()
+        {
+            var sumas = await _context.Pagos
+                .Where(p => p.Estado == "CONFIRMADO")
+                .GroupBy(p => p.GraduadoId)
+                .Select(x => new { GraduadoId = x.Key, Pagado = x.Sum(p => p.Monto) })
+                .ToDictionaryAsync(x => x.GraduadoId, x => x.Pagado);
+
+            var graduados = await _context.Graduados
+                .OrderBy(g => g.Identificador)
+                .Select(g => new
+                {
+                    g.Id,
+                    g.Identificador,
+                    g.TotalGraduacion,
+                    Registrado = g.ApplicationUserId != null
+                })
+                .ToListAsync();
+
+            var estado = graduados.Select(g => new
+            {
+                g.Id,
+                g.Identificador,
+                g.Registrado,
+                Total = g.TotalGraduacion,
+                Pagado = sumas.GetValueOrDefault(g.Id)
+            });
+
+            return Ok(estado);
+        }
+
         // Resumen de un graduado: el ADMIN ve cualquiera, el GRADUADO solo el suyo
         [HttpGet("{id}/resumen")]
         [Authorize(Roles = "ADMIN,GRADUADO")]

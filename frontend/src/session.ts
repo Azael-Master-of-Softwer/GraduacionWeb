@@ -44,3 +44,10 @@ export function cargarSesion(): Sesion | null {
 export function borrarSesion() {
   localStorage.removeItem(CLAVE)
 }
+
+// Rango visible de la persona según sus roles
+export function rango(roles: string[]): string {
+  if (roles.includes('ADMIN')) return 'Admin'
+  if (roles.includes('COMITE')) return 'Comité'
+  return 'Alumno'
+}
