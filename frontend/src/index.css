@@ -733,3 +733,14 @@ button.cal-dia.elegido {
 button.cal-dia.elegido .cal-puntos i {
   background: #fff;
 }
+
+/* ---- Carga masiva ---- */
+@media (max-width: 640px) {
+  td.celda-accion {
+    justify-content: flex-end;
+  }
+
+  td.celda-accion:empty {
+    display: none;
+  }
+}
