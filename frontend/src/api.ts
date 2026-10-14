@@ -12,7 +12,7 @@ export class ApiError extends Error {
 }
 
 const TRADUCCIONES: Record<string, string> = {
-  PasswordTooShort: 'La contraseña debe tener al menos 6 caracteres.',
+  PasswordTooShort: 'La contraseña debe tener al menos 8 caracteres.',
   PasswordRequiresNonAlphanumeric:
     'La contraseña debe incluir al menos un símbolo (por ejemplo ! # $ %).',
   PasswordRequiresDigit: 'La contraseña debe incluir al menos un número.',

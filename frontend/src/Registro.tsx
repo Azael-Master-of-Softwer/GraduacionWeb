@@ -105,11 +105,11 @@ export default function Registro({ onRegistrado, onIrALogin }: Props) {
             value={password}
             onChange={setPassword}
             autoComplete="new-password"
-            minLength={6}
+            minLength={8}
           />
         </label>
         <p className="suave ayuda">
-          Mínimo 6 caracteres, con mayúscula, minúscula, número y un símbolo.
+          Mínimo 8 caracteres, con mayúscula, minúscula, número y un símbolo.
         </p>
 
         <label>
