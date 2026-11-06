@@ -108,7 +108,7 @@ export default function ResumenGeneral({ token, partes = 'todo' }: Props) {
   const { dato, error } = useDato<General>('/api/Configuracion/general', token)
 
   return (
-    <section>
+    <section className={partes === 'cuenta' ? 'ancho-completo' : undefined}>
       {partes === 'todo' && <h2>Nuestra generación</h2>}
       {partes === 'fondos' && <h2>Aportaciones de la generación</h2>}
       {error && <p className="error">{error}</p>}

@@ -10,6 +10,7 @@ import {
   guardarToken,
 } from './session'
 import type { Sesion } from './session'
+import { limpiarSeccion } from './useSeccion'
 
 export default function App() {
   const [sesion, setSesion] = useState<Sesion | null>(cargarSesion)
@@ -24,6 +25,7 @@ export default function App() {
   }
 
   function salir() {
+    limpiarSeccion()
     borrarSesion()
     setSesion(null)
     setModo('login')

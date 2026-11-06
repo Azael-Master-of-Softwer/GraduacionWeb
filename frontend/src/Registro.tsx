@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { api, ApiError } from './api'
 import CampoContrasena from './CampoContrasena'
+import PantallaAcceso from './PantallaAcceso'
 
 type Props = {
   onRegistrado: (token: string) => void
@@ -61,7 +62,7 @@ export default function Registro({ onRegistrado, onIrALogin }: Props) {
   }
 
   return (
-    <main className="tarjeta">
+    <PantallaAcceso>
       <h1>Crear mi cuenta</h1>
       <p className="suave">Necesitas el código de registro que te dio el comité.</p>
 
@@ -140,6 +141,6 @@ export default function Registro({ onRegistrado, onIrALogin }: Props) {
           Iniciar sesión
         </button>
       </p>
-    </main>
+    </PantallaAcceso>
   )
 }

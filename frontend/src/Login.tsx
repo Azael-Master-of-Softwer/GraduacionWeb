@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { api, ApiError } from './api'
 import CampoContrasena from './CampoContrasena'
+import PantallaAcceso from './PantallaAcceso'
 
 type Props = {
   onLogin: (token: string) => void
@@ -36,9 +37,9 @@ export default function Login({ onLogin, onIrARegistro }: Props) {
   }
 
   return (
-    <main className="tarjeta">
-      <h1>Graduación</h1>
-      <p className="suave">Inicia sesión para ver tu información.</p>
+    <PantallaAcceso>
+      <h1>Iniciar sesión</h1>
+      <p className="suave">Entra con tu correo para ver tu información.</p>
 
       <form onSubmit={enviar}>
         <label>
@@ -80,6 +81,6 @@ export default function Login({ onLogin, onIrARegistro }: Props) {
           Crear mi cuenta
         </button>
       </p>
-    </main>
+    </PantallaAcceso>
   )
 }

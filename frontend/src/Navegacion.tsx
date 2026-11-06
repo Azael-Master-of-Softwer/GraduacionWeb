@@ -16,7 +16,7 @@ type Props = {
 export default function Navegacion({ items, activo, onElegir }: Props) {
   return (
     <nav className="nav-inferior" aria-label="Secciones">
-      <div className="nav-interior" style={{ gridTemplateColumns: `repeat(${items.length}, 1fr)` }}>
+      <div className="nav-interior" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(64px, 1fr))` }}>
         {items.map((item) => (
           <button
             key={item.id}
